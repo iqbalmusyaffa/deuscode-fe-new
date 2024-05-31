@@ -159,40 +159,13 @@ export default {
 
         if (response.status === 200) {
           localStorage.setItem('token', response.data.token);
-          alert('Login successful!');
+          this.$router.push('/dashboard'); // Redirect to dashboard
         } else {
           alert(response.data.message || 'An error occurred. Please try again.');
         }
       } catch (error) {
         console.error('Error:', error);
         alert(error.response?.data?.message || 'An error occurred. Please try again.');
-      }
-    },
-    getToken() {
-      return localStorage.getItem('token');
-    },
-    async fetchProtectedData() {
-      const token = this.getToken();
-      if (!token) {
-        alert('You are not logged in. Please log in first.');
-        return;
-      }
-
-      try {
-        const response = await axios.get('/protected', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (response.status === 200) {
-          console.log('Protected data:', response.data);
-        } else {
-          alert('Error accessing protected route. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
       }
     }
   }

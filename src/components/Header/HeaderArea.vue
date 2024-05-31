@@ -53,7 +53,7 @@ const { isSidebarOpen, toggleSidebar } = useSidebarStore()
         </button>
         <!-- Hamburger Toggle BTN -->
         <router-link class="block flex-shrink-0 lg:hidden" to="/">
-          <img src="/src/assets/images/logo/dcu-logo.png" alt="Logo" />
+          <img src="/src/assets/images/logo/logo2.png" alt="Logo" />
         </router-link>
       </div>
       <div class="hidden sm:block">
