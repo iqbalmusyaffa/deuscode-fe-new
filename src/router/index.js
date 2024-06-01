@@ -7,7 +7,10 @@ import TambahProdukView from '@/views/TambahprodukView.vue';
 import EditProdukView from '@/views/EditprodukView.vue';
 import LihatProdukView from '@/views/LihatprodukView.vue';
 import DataPinjamanView from '@/views/DatapinjamanView.vue';
-
+import LaporankeuanganView from '@/views/LaporankeuanganView.vue';
+import PengajuanpinjamanView from '@/views/PengajuanpinjamanView.vue';
+import PengumunanpenggunaView from '@/views/PengumunanpenggunaView.vue';
+import KontenwebsiteView from '@/views/KontenwebsiteView.vue';
 const routes = [
   {
     path: '/',
@@ -77,6 +80,38 @@ const routes = [
       title: 'Data Pinjaman',
     }
   },
+  {
+    path: '/laporankeuangan',
+    name: 'laporankeuangan',
+    component: LaporankeuanganView,
+    meta: {
+      title: 'Laporan Keuangan',
+    }
+  },
+  {
+    path: '/pengajuanpinjaman',
+    name: 'pengajuanpinjaman',
+    component: PengajuanpinjamanView,
+    meta: {
+      title: 'Pengajuan Pinjaman',
+    }
+  },
+  {
+  path: '/pengumumanpengguna',
+  name: 'pengumumanpengguna',
+  component: PengumunanpenggunaView,
+  meta: {
+    title: 'Pengumuman Pengguna',
+  }
+},
+{
+  path: '/kontenwebsite',
+  name: 'kontenwebsite',
+  component: KontenwebsiteView,
+  meta: {
+    title: 'Konten Website',
+  }
+},
 ];
 
 const router = createRouter({
