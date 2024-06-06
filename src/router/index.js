@@ -50,7 +50,7 @@ const routes = [
   },
   {
     path: '/tambah-produk',
-    name: 'tambahProduk',
+    name: 'tambah Produk',
     component: TambahProdukView,
     meta: {
       title: 'Tambah Produk',
