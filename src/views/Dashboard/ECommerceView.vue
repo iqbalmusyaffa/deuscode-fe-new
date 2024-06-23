@@ -7,6 +7,32 @@ import ChatCard from '@/components/ChatCard.vue'
 import MapOne from '@/components/Maps/MapOne.vue'
 import TableOne from '@/components/Tables/TableOne.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+
+const data = ref(null);
+
+onMounted(async () => {
+  await fetchData();
+});
+
+async function fetchData() {
+  const token = localStorage.getItem('accessToken'); // Mengambil token dari localStorage
+  try {
+    const response = await axios.get('/api/dashboard-data', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    data.value = response.data;
+  } catch (error: any) {
+    console.error('Failed to fetch dashboard data:', error);
+    if (error.response && error.response.status === 401) {
+      alert('Session expired. Please login again.');
+      import.meta.env.VUE_ROUTER.push('/login');
+    }
+  }
+}
 </script>
 
 <template>

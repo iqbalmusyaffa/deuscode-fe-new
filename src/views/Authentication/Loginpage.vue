@@ -5,7 +5,7 @@ import { ref } from "vue";
 <template>
   <div className="bg-white h-screen flex items-center justify-center">
     <div
-      className="flex items-center justify-center gap-28 bg-[#ffffff] w-max p-16 pr-0 rounded-xl shadow-[0px_12px_28px_2px_rgba(0,0,0,0.3)]"
+      className="flex items-center justify-center gap-28 bg-[#ffffff] w-250 p-20 pr-0 rounded-xl shadow-[0px_12px_28px_2px_rgba(0,0,0,0.3)]"
     >
       <div className="p-20 pt-8">
         <div className="flex justify-center">
@@ -99,8 +99,6 @@ import { ref } from "vue";
           </div>
         </div>
       </div>
-
-      <!-- {/* right side */} -->
       <div className="">
         <div
           className="mt-16 mr-0 bg-[#175FAA] pt-28 pr-20 pl-8 pb-5 rounded-tl-[200px] rounded-bl-[50px]"
@@ -140,32 +138,28 @@ import { ref } from "vue";
   </div>
 </template>
 <script>
-import axios from '@/axios'; // Ensure this path is correct
+import axios from 'axios';
 
 export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: null
     };
   },
   methods: {
     async login() {
       try {
-        const response = await axios.post('/login', {
+        const response = await axios.post('http://localhost:3000/api/auth/login', {
           email: this.email,
           password: this.password
         });
-
-        if (response.status === 200) {
-          localStorage.setItem('token', response.data.token);
-          this.$router.push('/dashboard'); // Redirect to dashboard
-        } else {
-          alert(response.data.message || 'An error occurred. Please try again.');
-        }
+        localStorage.setItem('userToken', response.data.token);
+        this.$router.push('/dashboard'); // Redirect to the dashboard page
       } catch (error) {
-        console.error('Error:', error);
-        alert(error.response?.data?.message || 'An error occurred. Please try again.');
+        this.error = error.response ? error.response.data.error : 'Login failed';
+        console.error('Login failed:', error);
       }
     }
   }
