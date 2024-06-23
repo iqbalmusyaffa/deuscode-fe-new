@@ -11,6 +11,7 @@ import LaporankeuanganView from '@/views/LaporankeuanganView.vue';
 import PengajuanpinjamanView from '@/views/PengajuanpinjamanView.vue';
 import PengumunanpenggunaView from '@/views/PengumunanpenggunaView.vue';
 import KontenwebsiteView from '@/views/KontenwebsiteView.vue';
+
 const routes = [
   {
     path: '/',
@@ -30,6 +31,7 @@ const routes = [
     component: ECommerceView,
     meta: {
       title: 'Dashboard',
+      requiresAuth: true // Requires authentication
     }
   },
   {
@@ -38,6 +40,8 @@ const routes = [
     component: DatapenggunaView,
     meta: {
       title: 'Data Pengguna',
+      requiresAuth: true, // Requires authentication
+      requiresAdmin: true // Requires admin role
     }
   },
   {
@@ -46,14 +50,16 @@ const routes = [
     component: DataprodukView,
     meta: {
       title: 'Data Produk',
+      requiresAuth: true // Requires authentication
     }
   },
   {
     path: '/tambah-produk',
-    name: 'tambah Produk',
+    name: 'tambahProduk',
     component: TambahProdukView,
     meta: {
       title: 'Tambah Produk',
+      requiresAuth: true // Requires authentication
     }
   },
   {
@@ -62,6 +68,7 @@ const routes = [
     component: EditProdukView,
     meta: {
       title: 'Edit Produk',
+      requiresAuth: true // Requires authentication
     }
   },
   {
@@ -70,6 +77,7 @@ const routes = [
     component: LihatProdukView,
     meta: {
       title: 'Lihat Produk',
+      requiresAuth: true // Requires authentication
     }
   },
   {
@@ -78,6 +86,7 @@ const routes = [
     component: DataPinjamanView,
     meta: {
       title: 'Data Pinjaman',
+      requiresAuth: true // Requires authentication
     }
   },
   {
@@ -86,6 +95,7 @@ const routes = [
     component: LaporankeuanganView,
     meta: {
       title: 'Laporan Keuangan',
+      requiresAuth: true // Requires authentication
     }
   },
   {
@@ -94,24 +104,27 @@ const routes = [
     component: PengajuanpinjamanView,
     meta: {
       title: 'Pengajuan Pinjaman',
+      requiresAuth: true // Requires authentication
     }
   },
   {
-  path: '/pengumumanpengguna',
-  name: 'pengumumanpengguna',
-  component: PengumunanpenggunaView,
-  meta: {
-    title: 'Pengumuman Pengguna',
+    path: '/pengumumanpengguna',
+    name: 'pengumumanpengguna',
+    component: PengumunanpenggunaView,
+    meta: {
+      title: 'Pengumuman Pengguna',
+      requiresAuth: true // Requires authentication
+    }
+  },
+  {
+    path: '/kontenwebsite',
+    name: 'kontenwebsite',
+    component: KontenwebsiteView,
+    meta: {
+      title: 'Konten Website',
+      requiresAuth: true // Requires authentication
+    }
   }
-},
-{
-  path: '/kontenwebsite',
-  name: 'kontenwebsite',
-  component: KontenwebsiteView,
-  meta: {
-    title: 'Konten Website',
-  }
-},
 ];
 
 const router = createRouter({
@@ -127,23 +140,30 @@ router.beforeEach((to, from, next) => {
 
   // Check if the route requires authentication
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('userToken');
     if (!token) {
-      // User is not authenticated, redirect to login page
       next({ name: 'login' });
     } else {
-      // User is authenticated, proceed to the route
       next();
     }
   } else {
-    // Route does not require authentication, proceed
     next();
   }
 
-  // If the user is already authenticated and tries to access the login page,
-  // redirect them to the dashboard
-  if (to.name === 'login' && localStorage.getItem('token')) {
-    next({ name: 'dashboard' }); // Redirect to dashboard if already authenticated
+  // Redirect if already logged in and accessing login page
+  if (to.name === 'login' && localStorage.getItem('userToken')) {
+    next({ name: 'dashboard' });
+  }
+
+  // Admin role check
+  if (to.matched.some(record => record.meta.requiresAdmin)) {
+    const userRole = localStorage.getItem('userRole');
+    if (userRole !== 'admin') {
+      alert('Anda tidak memiliki izin untuk melihat halaman ini.');
+      next({ name: 'Home' });
+    } else {
+      next();
+    }
   }
 });
 
